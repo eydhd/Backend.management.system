@@ -1,0 +1,87 @@
+package com.example.end.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "firms")
+@EntityListeners(AuditingEntityListener.class)
+public class Firm {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @NotBlank(message = "公司名称不能为空")
+    @Size(min = 2, max = 100, message = "公司名称长度必须在2-100个字符之间")
+    @Column(unique = true, nullable = false)
+    private String name;
+    
+    @NotBlank(message = "密码不能为空")
+    @Size(min = 6, message = "密码长度不能少于6个字符")
+    @Column(nullable = false)
+    private String password;
+    
+    @CreatedDate
+    @Column(name = "creation_time", nullable = false, updatable = false)
+    private LocalDateTime creationTime;
+    
+    @Pattern(regexp = "^1[3-9]\\d{9}$", message = "手机号格式不正确")
+    @Column(name = "mobile_phone_number", unique = true, nullable = false)
+    private String mobilePhoneNumber;
+    
+    public Firm() {}
+    
+    public Firm(String name, String password, String mobilePhoneNumber) {
+        this.name = name;
+        this.password = password;
+        this.mobilePhoneNumber = mobilePhoneNumber;
+    }
+    
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public LocalDateTime getCreationTime() {
+        return creationTime;
+    }
+    
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+    
+    public String getMobilePhoneNumber() {
+        return mobilePhoneNumber;
+    }
+    
+    public void setMobilePhoneNumber(String mobilePhoneNumber) {
+        this.mobilePhoneNumber = mobilePhoneNumber;
+    }
+}
